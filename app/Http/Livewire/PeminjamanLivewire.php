@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -89,6 +90,7 @@ class PeminjamanLivewire extends Component
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all(); 
+        DB::beginTransaction();
         Peminjaman::with('Buku', 'Petugas', 'Anggota')->updateOrCreate(['id_peminjaman'=> $this->id_peminjaman],
         [
             'tanggal_pinjam' => $this->tanggal_pinjam,
@@ -102,10 +104,12 @@ class PeminjamanLivewire extends Component
         session()->flash('message', $this->id_peminjaman ? $this->tanggal_pinjam . ' Diperbaharui':$this->tanggal_pinjam . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
     }
 
     public function edit($id_peminjaman)
     {
+        DB::beginTransaction();
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all();   
@@ -119,6 +123,7 @@ class PeminjamanLivewire extends Component
         $this->id_petugas = $peminjaman->id_petugas;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -143,11 +148,13 @@ class PeminjamanLivewire extends Component
 
     public function delete($id_peminjaman)
     {
+        DB::beginTransaction();
         $Buku = Buku::all();
         $Petugas = Petugas::all();
         $Anggota = Anggota::all();   
         $peminjaman = Peminjaman::with('Buku', 'Petugas', 'Anggota')->find($id_peminjaman);
         $peminjaman->delete();
         session()->flash('message', $peminjaman->tanggal_pinjam. ' Dihapus');
+        DB::commit();
     }
 }

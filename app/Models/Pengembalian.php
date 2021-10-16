@@ -10,7 +10,7 @@ class Pengembalian extends Model
     use HasFactory;
     protected $table='pengembalian';
     protected $primaryKey='id_pengembalian';
-    protected $fillable=['id_pengembalian', 'tanggal_pengembalian', 'denda', 'id_buku', 'id_anggota', 'id_petugas'];
+    protected $fillable=['id_pengembalian', 'tanggal_pengembalian', 'denda', 'id_buku', 'id_anggota', 'id_petugas', 'created_at', 'updated_at'];
     public $timestamps = false;
 
     public function Anggota()

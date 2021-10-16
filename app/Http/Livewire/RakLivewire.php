@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Maatwebsite\excel\Facedes\Excel;
@@ -16,6 +17,7 @@ class RakLivewire extends Component
 
     protected $rak1;
     public $rak, $Buku, $id_rak, $nama_rak, $lokasi_rak, $id_buku, $request;
+    public $buku, $kode_buku, $judul_buku, $penulis_buku, $penerbit_buku, $tahun_penerbit, $stok;
     public $isModal, $isModal1;
 
     protected $UpdatesQueryString = ['request'];
@@ -72,27 +74,47 @@ class RakLivewire extends Component
 
     public function store()
     {
+        try{
         $this->validate([
             'nama_rak' => 'required|string',
             'lokasi_rak' => 'required|string',
             'id_buku' => 'required',
         ]);
         $this->Buku = Buku::all();
+        DB::beginTransaction();
         Rak::with('Buku')->updateOrCreate(['id_rak'=> $this->id_rak],
         [
             'nama_rak' => $this->nama_rak,
             'lokasi_rak' => $this->lokasi_rak,
-            'id_buku' => $this->id_buku,
-            
+            'id_buku' => $this->id_buku  
         ]);
-
+        if($rak=Rak::find($id_buku)==null){
+            Buku::updateOrCreate(['id_buku'=> $this->id_buku],
+            [
+                'kode_buku' => $this->kode_buku,
+                'judul_buku' => $this->judul_buku,
+                'penulis_buku' => $this->penulis_buku,
+                'penerbit_buku' => $this->penerbit_buku,
+                'tahun_penerbit' => $this->tahun_penerbit,
+                'stok' => $this->stok
+            ]);
+        }
         session()->flash('message', $this->id_rak ? $this->nama_rak . ' Diperbaharui':$this->nama_rak . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 
     public function edit($id_rak)
     {
+        DB::beginTransaction();
         $this->Buku = Buku::all();   
         $rak = Rak::with('Buku')->find($id_rak);
 
@@ -102,6 +124,7 @@ class RakLivewire extends Component
         $this->id_buku = $rak->id_buku;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -122,9 +145,11 @@ class RakLivewire extends Component
 
     public function delete($id_rak)
     {
+        DB::beginTransaction();
         $Buku = Buku::all();   
         $rak = Rak::with('Buku')->find($id_rak);
         $rak->delete();
         session()->flash('message', $rak->nama_rak. ' Dihapus');
+        DB::commit();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -75,7 +76,7 @@ class PetugasLivewire extends Component
             'no_telp_petugas' => 'required|string',
             'alamat_petugas' => 'required|string'
         ]);
-
+        DB::beginTransaction();
         Petugas::updateOrCreate(['id_petugas'=> $this->id_petugas],
         [
             'nama_petugas' => $this->nama_petugas,
@@ -87,10 +88,12 @@ class PetugasLivewire extends Component
         session()->flash('message', $this->id_petugas ? $this->nama_petugas . ' Diperbaharui':$this->nama_petugas . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
     }
 
     public function edit($id_petugas)
     {
+        DB::beginTransaction();
         $petugas = Petugas::find($id_petugas);
 
         $this->id_petugas = $id_petugas;
@@ -100,6 +103,7 @@ class PetugasLivewire extends Component
         $this->alamat_petugas = $petugas->alamat_petugas;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -120,8 +124,10 @@ class PetugasLivewire extends Component
 
     public function delete($id_petugas)
     {
+        DB::beginTransaction();
         $petugas = Petugas::find($id_petugas);
         $petugas->delete();
         session()->flash('message', $petugas->nama_petugas. ' Dihapus');
+        DB::commit();
     }
 }

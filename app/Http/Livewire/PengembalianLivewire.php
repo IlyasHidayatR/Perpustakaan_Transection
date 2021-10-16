@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -88,7 +89,8 @@ class PengembalianLivewire extends Component
         ]);
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
-        $this->Anggota = Anggota::all(); 
+        $this->Anggota = Anggota::all();
+        DB::beginTransaction(); 
         Pengembalian::with('Buku', 'Petugas', 'Anggota')->updateOrCreate(['id_pengembalian'=> $this->id_pengembalian],
         [
             'tanggal_pengembalian' => $this->tanggal_pengembalian,
@@ -102,10 +104,12 @@ class PengembalianLivewire extends Component
         session()->flash('message', $this->id_pengembalian ? $this->tanggal_pengembalian . ' Diperbaharui':$this->tanggal_pengembalian . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
     }
 
     public function edit($id_pengembalian)
     {
+        DB::beginTransaction();
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all();   
@@ -119,6 +123,7 @@ class PengembalianLivewire extends Component
         $this->id_petugas = $pengembalian->id_petugas;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -143,11 +148,13 @@ class PengembalianLivewire extends Component
 
     public function delete($id_pengembalian)
     {
+        DB::beginTransaction();
         $Buku = Buku::all();
         $Petugas = Petugas::all();
         $Anggota = Anggota::all();   
         $pengembalian = Pengembalian::with('Buku', 'Petugas', 'Anggota')->find($id_pengembalian);
         $pengembalian->delete();
         session()->flash('message', $pengembalian->tanggal_pengembalian. ' Dihapus');
+        DB::commit();
     }
 }

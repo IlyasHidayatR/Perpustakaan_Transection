@@ -10,7 +10,7 @@ class Petugas extends Model
     use HasFactory;
     protected $table='petugas';
     protected $primaryKey='id_petugas';
-    protected $fillable=['id_petugas', 'nama_petugas', 'jabatan_petugas', 'no_telp_petugas', 'alamat_petugas'];
+    protected $fillable=['id_petugas', 'nama_petugas', 'jabatan_petugas', 'no_telp_petugas', 'alamat_petugas', 'created_at', 'updated_at'];
     public $timestamps = false;
 
     public function Peminjaman()

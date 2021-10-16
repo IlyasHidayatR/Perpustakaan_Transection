@@ -7,7 +7,7 @@ use App\Http\Livewire\PengembalianLivewire;
 use App\Http\Livewire\BukuLivewire;
 use App\Http\Livewire\PetugasLivewire;
 use App\Http\Livewire\RakLivewire;
-use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\AnimeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +38,11 @@ Route::group(['middleware' => ['auth:sanctum','verified']], function(){
     })->name('analytic');
 
     
+    Route::get('anime', 'App\Http\Controllers\AnimeController@index')->name('anime');
+    Route::get('createanime', 'App\Http\Controllers\AnimeController@create')->name('createanime');
+    Route::post('getanime/{id_genre}', 'App\Http\Controllers\AnimeController@store')->name('getanime');
+    Route::get('genre', 'App\Http\Controllers\GenreController@index')->name('genre');
+    Route::post('getgenre', 'App\Http\Controllers\GenreController@store')->name('getgenre');
 
     Route::get('anggota', AnggotaLivewire::class)->name('anggota');
     Route::get('peminjaman', PeminjamanLivewire::class)->name('peminjaman');

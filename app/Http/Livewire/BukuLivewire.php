@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -79,7 +80,7 @@ class BukuLivewire extends Component
             'tahun_penerbit' => 'required|string',
             'stok' => 'required|string'
         ]);
-
+        DB::beginTransaction();
         Buku::updateOrCreate(['id_buku'=> $this->id_buku],
         [
             'kode_buku' => $this->kode_buku,
@@ -93,10 +94,12 @@ class BukuLivewire extends Component
         session()->flash('message', $this->id_buku ? $this->judul_buku . ' Diperbaharui':$this->judul_buku . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
     }
 
     public function edit($id_buku)
     {
+        DB::beginTransaction();
         $buku = Buku::find($id_buku);
 
         $this->id_buku = $id_buku;
@@ -108,6 +111,7 @@ class BukuLivewire extends Component
         $this->stok = $buku->stok;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -130,8 +134,10 @@ class BukuLivewire extends Component
 
     public function delete($id_buku)
     {
+        DB::beginTransaction();
         $buku = Buku::find($id_buku);
         $buku->delete();
         session()->flash('message', $buku->judul_buku. ' Dihapus');
+        DB::commit();
     }
 }

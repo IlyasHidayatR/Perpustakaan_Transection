@@ -1,13 +1,14 @@
+<x-app-layout>
 @section('title','Data')
 @section('judul','Tasks')
-@section('page','/peminjaman')
+@section('page','/anime')
 @section('request','request')
 
 <div class="flex flex-wrap">
     <div class="w-full p-6">
     <div class="bg-white">
         <nav class="flex flex-col sm:flex-row">
-            <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+            <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             <a href="{{ route('peminjaman') }}" :active="request()->routeIs('peminjaman')">Peminjaman</a>
             </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             <a href="{{ route('pengembalian') }}" :active="request()->routeIs('pengembalian')">Pengembalian</a>
@@ -19,24 +20,22 @@
             <a href="{{ route('buku') }}" :active="request()->routeIs('buku')">Buku</a>
             </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             <a href="{{ route('rak') }}" :active="request()->routeIs('rak')">Rak</a>
-            </button>
-            <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
+            </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             <a href="{{ route('anime') }}" :active="request()->routeIs('anime')">Anime</a>
+            </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+            <a href="{{ route('genre') }}" :active="request()->routeIs('genre')">Genre</a>
             </button>
         </nav>
     </div>
     <hr>
-    <h2><b>Daftar Peminjaman</b></h2>
+    <h2><b>Daftar Genre</b></h2>
             <hr>
-            <button wire:click="create()" class="box row-span-2 overflow-hidden grid-cols-1 grid-rows-2 gap-2" style="background-color:blue; color:white">Tambah Data</button>
-            @if ($isModal)
-                    @include('livewire.createpeminjaman')
-            @endif
-            <a href="#" class="box row-span-2 overflow-hidden grid-cols-1 grid-rows-2 gap-2" style="background-color:brown; color:white">Export</a>
+            <button class="box row-span-2 overflow-hidden grid-cols-1 grid-rows-2 gap-2" style="background-color:blue; color:white"><a href="/createanime">Tambah Data</a></button>
+            <button wire:click="export" class="box row-span-2 overflow-hidden grid-cols-1 grid-rows-2 gap-2" style="background-color:brown; color:white">Export</button>
             <button onclick="openModal(true)">
                 <a class="box row-span-2 overflow-hidden grid-cols-1 grid-rows-2 gap-2" style="background-color:green; color:white">Import</a>
             </button>
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form wire:submit.prevent="submit">
             @csrf
             <!-- overlay -->
             <div id="modal_overlay" class="hidden absolute inset-0 bg-black bg-opacity-30 h-screen w-full flex justify-center items-start md:items-center pt-10 md:pt-0">
@@ -55,14 +54,14 @@
                             <div class="form-group">
                             <label for="file">Masukkan file excel:</label>
                             <br>
-                            <input type="file" id="file" name="file" required>
+                            <input type="file" class="form-control @error('file') is invalid @enderror"   required>
                             </div>
                         </div>
 
                         <!-- footer -->
                         <div class="absolute bottom-0 left-0 px-4 py-3 border-t border-gray-200 w-full flex justify-end items-center gap-3">
                         <div class="form-group">
-                        <button type="submit" name="upload" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none">Save</button>
+                        <button type="submit" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white focus:outline-none">Save</button>
                         </div>
                         <button onclick="openModal(false)" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white focus:outline-none">
                             Close
@@ -108,44 +107,36 @@
                 <thead>
                     <tr>
                     <th class="bg-blue-700 text-white p-2">No.</th>
-                    <th class="bg-blue-700 text-white p-2">Tanggal Pinjam</th>
-                    <th class="bg-blue-700 text-white p-2">Tanggal Kembali</th>
-                    <th class="bg-blue-700 text-white p-2">Buku</th>
-                    <th class="bg-blue-700 text-white p-2">Nama Anggota</th>
-                    <th class="bg-blue-700 text-white p-2">Nama Petugas</th>
+                    <th class="bg-blue-700 text-white p-2">Nama Genre</th>
                     <th class="bg-blue-700 text-white p-2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                @forelse($peminjaman1 as $pj)
+                @forelse($genre as $ag)
                 <tr class="bg-blue-100 text-blue-900">
                 <!-- $loop->iteration -->
-                <th class="p-2">{{$loop->iteration}}.</th>
-                    <th class="p-2">{{$pj->tanggal_pinjam}}</th>
-                    <th class="p-2">{{$pj->tanggal_kembali}}</th>
-                    <th class="p-2">{{$pj->Buku->judul_buku}}</th>
-                    <th class="p-2">{{$pj->Anggota->nama_anggota}}</th>
-                    <th class="p-2">{{$pj->Petugas->nama_petugas}}</th>
+                    <th class="p-2">{{$loop->iteration}}.</th>
+                    <th class="p-2">{{$ag->nama_genre}}</th>
                     <th class="p-2">
-                        <button wire:click="show({{$pj->id_peminjaman}})" class="border" style="background-color:aqua; color:white">detail</button>
-                        @if ($isModal1)
-                            @include('livewire.detailpeminjaman')
-                        @endif
-                        <button wire:click="edit({{$pj->id_peminjaman}})" class="border" style="background-color:green; color:white">edit</button>
-                        <button wire:click="delete({{$pj->id_peminjaman}})" class="badge badge-danger inline border" style="background-color:red; color:white">delete</button>
+                        <button  class="border" style="background-color:aqua; color:white">detail</button>
+                        <button  class="border" style="background-color:green; color:white">edit</button>
+                        <button  class="badge badge-danger inline border" style="background-color:red; color:white">delete</button>
                     </th>
                 </tr>
                 @empty
                     <tr>
-                        <th class="p-2 text-center" colspan="S">Tidak ada data</th>
+                        <th class="p-2" colspan="S"><center>Tidak ada data</center></th>
                     </tr>
                 @endforelse
                 </tbody>
             </table>
             <div class="inline-flex mt-2 xs:mt-0">
                 <nav class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l inline">
-                {{$peminjaman1->links()}}
+                    
                 </nav>
+                @livewireScripts
+                @livewireStyles
             </div>
         </div>
     </div>
+</x-app-layout>

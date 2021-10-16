@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -16,7 +17,7 @@ class AnggotaLivewire extends Component
     use WithPagination;
 
     protected $anggota1; 
-    public $id_anggota, $anggota, $kode_anggota, $nama_anggota, $jk_anggota, $jurusan_anggota, $no_telp_anggota, $alamat_anggota, $file, $request;
+    public $id_anggota, $anggota, $kode_anggota, $nama_anggota, $jk_anggota, $jurusan_anggota, $no_telp_anggota, $alamat_anggota, $file, $request, $created_at, $updated_at;
     public $isModal, $isModal1;
 
     protected $UpdatesQueryString = ['request'];
@@ -81,7 +82,7 @@ class AnggotaLivewire extends Component
             'no_telp_anggota' => 'required|string',
             'alamat_anggota' => 'required|string'
         ]);
-
+        DB::beginTransaction();
         Anggota::updateOrCreate(['id_anggota'=> $this->id_anggota],
         [
             'kode_anggota' => $this->kode_anggota,
@@ -89,16 +90,18 @@ class AnggotaLivewire extends Component
             'jk_anggota' => $this->jk_anggota,
             'jurusan_anggota' => $this->jurusan_anggota,
             'no_telp_anggota' => $this->no_telp_anggota,
-            'alamat_anggota' => $this->alamat_anggota
+            'alamat_anggota' => $this->alamat_anggota,
         ]);
 
         session()->flash('message', $this->id_anggota ? $this->nama_anggota . ' Diperbaharui':$this->nama_anggota . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
+        DB::commit();
     }
 
     public function edit($id_anggota)
     {
+        DB::beginTransaction();
         $anggota = Anggota::find($id_anggota);
 
         $this->id_anggota = $id_anggota;
@@ -110,6 +113,7 @@ class AnggotaLivewire extends Component
         $this->alamat_anggota = $anggota->alamat_anggota;
         
         $this->openModal();
+        DB::commit();
 
     }
 
@@ -132,9 +136,11 @@ class AnggotaLivewire extends Component
 
     public function delete($id_anggota)
     {
+        DB::beginTransaction();
         $anggota = Anggota::find($id_anggota);
         $anggota->delete();
         session()->flash('message', $anggota->nama_anggota. ' Dihapus');
+        DB::commit();
     }
 
     public function submit()

@@ -10,7 +10,7 @@ class Anggota extends Model
     use HasFactory;
     protected $table='anggota';
     protected $primaryKey='id_anggota';
-    protected $fillable=['id_anggota', 'kode_anggota', 'nama_anggota', 'jk_anggota', 'jurusan_anggota', 'no_telp_anggota', 'alamat_anggota'];
+    protected $fillable=['id_anggota', 'kode_anggota', 'nama_anggota', 'jk_anggota', 'jurusan_anggota', 'no_telp_anggota', 'alamat_anggota', 'created_at', 'updated_at'];
     public $timestamps = false;
 
     public function Peminjaman()
