@@ -27,4 +27,9 @@ class Buku extends Model
     {
         return $this->hasMany('App\Models\Rak');
     }
+
+    public function Transaksi()
+    {
+        return $this->hasMany('App\Models\Transaksi');
+    }
 }

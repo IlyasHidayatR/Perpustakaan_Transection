@@ -11,20 +11,7 @@
                 @csrf
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="">
-                        <div class="mb-4">
-                            <label for="tanggal_pinjam" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Pinjam:</label>
-                            <input type="date" wire:model="tanggal_pinjam" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_pinjam" name="tanggal_pinjam" required>
-                            @error('tanggal_pinjam')
-                            <span class="text-red-500">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="tanggal_kembali" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Kembali:</label>
-                            <input type="date" wire:model="tanggal_kembali" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_kembali" name="tanggal_kembali" required>
-                            @error('tanggal_kembali')
-                            <span class="text-red-500">{{$message}}</span>
-                            @enderror
-                        </div>
+                        
                         <div class="mb-4">
                             <label for="id_buku" class="block text-gray-700 text-sm font-bold mb-2">Judul Buku:</label>
                             <select wire:model="id_buku" id="id_buku" name="id_buku" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>

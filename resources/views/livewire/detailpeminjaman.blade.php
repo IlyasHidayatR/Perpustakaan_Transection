@@ -19,15 +19,15 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                            <label for="tanggal_pinjam" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Pinjam:</label>
-                            <input type="date" wire:model="tanggal_pinjam" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_pinjam" name="tanggal_pinjam" required>
-                            @error('tanggal_pinjam')
+                            <label for="created_at" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Pinjam:</label>
+                            <input type="datetime" wire:model="created_at" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="created_at" name="created_at" required>
+                            @error('created_at')
                             <span class="text-red-500">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-4">
                             <label for="tanggal_kembali" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Kembali:</label>
-                            <input type="date" wire:model="tanggal_kembali" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_kembali" name="tanggal_kembali" required>
+                            <input type="datetime" wire:model="tanggal_kembali" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_kembali" name="tanggal_kembali" required>
                             @error('tanggal_kembali')
                             <span class="text-red-500">{{$message}}</span>
                             @enderror

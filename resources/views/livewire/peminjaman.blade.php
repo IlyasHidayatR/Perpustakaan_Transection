@@ -121,7 +121,7 @@
                 <tr class="bg-blue-100 text-blue-900">
                 <!-- $loop->iteration -->
                 <th class="p-2">{{$loop->iteration}}.</th>
-                    <th class="p-2">{{$pj->tanggal_pinjam}}</th>
+                    <th class="p-2">{{$pj->created_at}}</th>
                     <th class="p-2">{{$pj->tanggal_kembali}}</th>
                     <th class="p-2">{{$pj->Buku->judul_buku}}</th>
                     <th class="p-2">{{$pj->Anggota->nama_anggota}}</th>

@@ -22,4 +22,9 @@ class Anggota extends Model
     {
         return $this->hasMany('App\Models\Pengembalian');
     }
+
+    public function Transaksi()
+    {
+        return $this->hasMany('App\Models\Transaksi');
+    }
 }

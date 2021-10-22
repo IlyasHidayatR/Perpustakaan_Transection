@@ -70,6 +70,7 @@ class PetugasLivewire extends Component
 
     public function store()
     {
+        try{
         $this->validate([
             'nama_petugas' => 'required|string',
             'jabatan_petugas' => 'required|string',
@@ -89,10 +90,18 @@ class PetugasLivewire extends Component
         $this->closeModal();
         $this->resetFields();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 
     public function edit($id_petugas)
     {
+        try{
         DB::beginTransaction();
         $petugas = Petugas::find($id_petugas);
 
@@ -104,6 +113,13 @@ class PetugasLivewire extends Component
         
         $this->openModal();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
 
     }
 
@@ -124,10 +140,18 @@ class PetugasLivewire extends Component
 
     public function delete($id_petugas)
     {
+        try{
         DB::beginTransaction();
         $petugas = Petugas::find($id_petugas);
         $petugas->delete();
         session()->flash('message', $petugas->nama_petugas. ' Dihapus');
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 }

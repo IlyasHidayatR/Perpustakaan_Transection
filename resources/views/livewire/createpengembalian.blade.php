@@ -11,13 +11,7 @@
                 @csrf
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="">
-                        <div class="mb-4">
-                            <label for="tanggal_pengembalian" class="block text-gray-700 text-sm font-bold mb-2">Tanggal Pengembalian:</label>
-                            <input type="date" wire:model="tanggal_pengembalian" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tanggal_pengembalian" name="tanggal_pengembalian" required>
-                            @error('tanggal_pengembalian')
-                            <span class="text-red-500">{{$message}}</span>
-                            @enderror
-                        </div>
+                        
                         <div class="mb-4">
                             <label for="denda" class="block text-gray-700 text-sm font-bold mb-2">Jumlah Denda:</label>
                             <input type="number" wire:model="denda" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="denda" name="denda" required>
@@ -29,8 +23,8 @@
                             <label for="id_buku" class="block text-gray-700 text-sm font-bold mb-2">Judul Buku:</label>
                             <select wire:model="id_buku" id="id_buku" name="id_buku" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                 <option disable value>Pilih Buku</option>
-                                @foreach($Buku as $bk)
-                                    <option value="{{$bk->id_buku}}">{{$bk->judul_buku}}</option>
+                                @foreach($peminjaman as $bk)
+                                    <option value="{{$bk->id_buku}}">{{$bk->Buku->judul_buku}}</option>
                                 @endforeach
                             </select>
                             @error('id_buku')
@@ -41,8 +35,8 @@
                             <label for="id_anggota" class="block text-gray-700 text-sm font-bold mb-2">Nama Anggota:</label>
                             <select wire:model="id_anggota" id="id_anggota" name="id_anggota" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                                 <option disable value>Pilih Anggota</option>
-                                @foreach($Anggota as $ag)
-                                    <option value="{{$ag->id_anggota}}">{{$ag->nama_anggota}}</option>
+                                @foreach($peminjaman as $ag)
+                                    <option value="{{$ag->id_anggota}}">{{$ag->Anggota->nama_anggota}}</option>
                                 @endforeach
                             </select>
                             @error('id_anggota')

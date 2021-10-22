@@ -74,6 +74,7 @@ class AnggotaLivewire extends Component
 
     public function store()
     {
+        try{
         $this->validate([
             'kode_anggota' => 'required|string',
             'nama_anggota' => 'required|string',
@@ -97,10 +98,18 @@ class AnggotaLivewire extends Component
         $this->closeModal();
         $this->resetFields();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 
     public function edit($id_anggota)
     {
+        try{
         DB::beginTransaction();
         $anggota = Anggota::find($id_anggota);
 
@@ -114,6 +123,13 @@ class AnggotaLivewire extends Component
         
         $this->openModal();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
 
     }
 
@@ -136,11 +152,19 @@ class AnggotaLivewire extends Component
 
     public function delete($id_anggota)
     {
+        try{
         DB::beginTransaction();
         $anggota = Anggota::find($id_anggota);
         $anggota->delete();
         session()->flash('message', $anggota->nama_anggota. ' Dihapus');
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 
     public function submit()

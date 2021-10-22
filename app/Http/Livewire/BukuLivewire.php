@@ -72,6 +72,7 @@ class BukuLivewire extends Component
 
     public function store()
     {
+        try{
         $this->validate([
             'kode_buku' => 'required|string',
             'judul_buku' => 'required|string',
@@ -95,10 +96,18 @@ class BukuLivewire extends Component
         $this->closeModal();
         $this->resetFields();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 
     public function edit($id_buku)
     {
+        try{
         DB::beginTransaction();
         $buku = Buku::find($id_buku);
 
@@ -112,6 +121,13 @@ class BukuLivewire extends Component
         
         $this->openModal();
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
 
     }
 
@@ -134,10 +150,18 @@ class BukuLivewire extends Component
 
     public function delete($id_buku)
     {
+        try{
         DB::beginTransaction();
         $buku = Buku::find($id_buku);
         $buku->delete();
         session()->flash('message', $buku->judul_buku. ' Dihapus');
         DB::commit();
+        }
+        catch (\Throwable $th){
+            DB::rollback();
+            $this->closeModal();
+            $this->resetFields();
+            session()->flash('message', 'Terjadi Kesalahan');
+        }
     }
 }

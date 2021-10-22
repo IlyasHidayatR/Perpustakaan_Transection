@@ -27,4 +27,9 @@ class Pengembalian extends Model
     {
         return $this->belongsTo('App\Models\Petugas', 'id_petugas');
     }
+
+    public function Transaksi()
+    {
+        return $this->hasMany('App\Models\Transaksi');
+    }
 }
