@@ -45,10 +45,10 @@ return [
 
         'mysql' => [
             'read' => [
-                'host' => '192.168.43.84',
+               'host' => '192.168.43.84',
             ],
             'write' => [
-                'host' => '196.168.43.235'
+               'host' => '192.168.43.235'
             ],
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Peminjaman extends Model
 {
@@ -28,8 +29,16 @@ class Peminjaman extends Model
         return $this->belongsTo('App\Models\Petugas', 'id_petugas');
     }
 
-    public function Transaksi()
+    public function Pengembalian()
     {
-        return $this->hasMany('App\Models\Transaksi');
+        return $this->hasMany('App\Models\Pengembalian');
+    }
+
+    static function getDetail(){
+        $return = DB::table('peminjaman')
+        ->join('anggota','peminjaman.id_anggota','=','anggota.id_anggota')
+        ->join('petugas','peminjaman.id_petugas','=','petugas.id_petugas')
+        ->join('buku','peminjaman.id_buku','=','buku.id_buku');
+        return $return;
     }
 }

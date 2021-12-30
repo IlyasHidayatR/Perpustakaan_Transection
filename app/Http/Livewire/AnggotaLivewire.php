@@ -74,6 +74,7 @@ class AnggotaLivewire extends Component
 
     public function store()
     {
+        DB::beginTransaction();
         try{
         $this->validate([
             'kode_anggota' => 'required|string',
@@ -83,7 +84,6 @@ class AnggotaLivewire extends Component
             'no_telp_anggota' => 'required|string',
             'alamat_anggota' => 'required|string'
         ]);
-        DB::beginTransaction();
         Anggota::updateOrCreate(['id_anggota'=> $this->id_anggota],
         [
             'kode_anggota' => $this->kode_anggota,
@@ -109,8 +109,8 @@ class AnggotaLivewire extends Component
 
     public function edit($id_anggota)
     {
-        try{
         DB::beginTransaction();
+        try{
         $anggota = Anggota::find($id_anggota);
 
         $this->id_anggota = $id_anggota;
@@ -152,8 +152,8 @@ class AnggotaLivewire extends Component
 
     public function delete($id_anggota)
     {
-        try{
         DB::beginTransaction();
+        try{
         $anggota = Anggota::find($id_anggota);
         $anggota->delete();
         session()->flash('message', $anggota->nama_anggota. ' Dihapus');

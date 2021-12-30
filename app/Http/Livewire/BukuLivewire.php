@@ -72,6 +72,7 @@ class BukuLivewire extends Component
 
     public function store()
     {
+        DB::beginTransaction();
         try{
         $this->validate([
             'kode_buku' => 'required|string',
@@ -81,7 +82,6 @@ class BukuLivewire extends Component
             'tahun_penerbit' => 'required|string',
             'stok' => 'required|string'
         ]);
-        DB::beginTransaction();
         Buku::updateOrCreate(['id_buku'=> $this->id_buku],
         [
             'kode_buku' => $this->kode_buku,
@@ -107,8 +107,8 @@ class BukuLivewire extends Component
 
     public function edit($id_buku)
     {
-        try{
         DB::beginTransaction();
+        try{
         $buku = Buku::find($id_buku);
 
         $this->id_buku = $id_buku;
@@ -150,8 +150,8 @@ class BukuLivewire extends Component
 
     public function delete($id_buku)
     {
-        try{
         DB::beginTransaction();
+        try{
         $buku = Buku::find($id_buku);
         $buku->delete();
         session()->flash('message', $buku->judul_buku. ' Dihapus');

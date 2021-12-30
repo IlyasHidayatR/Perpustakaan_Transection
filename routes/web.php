@@ -7,7 +7,6 @@ use App\Http\Livewire\PengembalianLivewire;
 use App\Http\Livewire\BukuLivewire;
 use App\Http\Livewire\PetugasLivewire;
 use App\Http\Livewire\RakLivewire;
-use App\Http\Controllers\AnimeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +26,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
+//Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::group(['middleware' => ['auth:sanctum','verified']], function(){
     Route::get('/dashboard', function(){
         return view('dashboard');
@@ -36,13 +35,6 @@ Route::group(['middleware' => ['auth:sanctum','verified']], function(){
     Route::get('/analytic', function(){
         return view('analytic');
     })->name('analytic');
-
-    
-    Route::get('anime', 'App\Http\Controllers\AnimeController@index')->name('anime');
-    Route::get('createanime', 'App\Http\Controllers\AnimeController@create')->name('createanime');
-    Route::post('getanime/{id_genre}', 'App\Http\Controllers\AnimeController@store')->name('getanime');
-    Route::get('genre', 'App\Http\Controllers\GenreController@index')->name('genre');
-    Route::post('getgenre', 'App\Http\Controllers\GenreController@store')->name('getgenre');
 
     Route::get('anggota', AnggotaLivewire::class)->name('anggota');
     Route::get('peminjaman', PeminjamanLivewire::class)->name('peminjaman');

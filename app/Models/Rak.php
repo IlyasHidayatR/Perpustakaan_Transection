@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Rak extends Model
 {
@@ -16,5 +17,11 @@ class Rak extends Model
     public function Buku()
     {
         return $this->belongsTo('App\Models\Buku', 'id_buku');
+    }
+
+    static function getDetail(){
+        $return = DB::table('rak')
+        ->join('buku','rak.id_buku','=','buku.id_buku');
+        return $return;
     }
 }

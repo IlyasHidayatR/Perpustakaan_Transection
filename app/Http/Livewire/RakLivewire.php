@@ -35,6 +35,8 @@ class RakLivewire extends Component
             $this->rak1 = Rak::with('Buku')->paginate(15):
             Rak::where('nama_rak','Like', '%'.$this->request.'%')->with('Buku')->paginate(15)
         ])->layout('layouts.main');
+        //$this->rak1 = Rak::all();
+        //return response()->json($this->rak1);
     }
 
     public function create()
@@ -74,6 +76,7 @@ class RakLivewire extends Component
 
     public function store()
     {
+        DB::beginTransaction();
         try{
         $this->validate([
             'nama_rak' => 'required|string',
@@ -81,7 +84,6 @@ class RakLivewire extends Component
             'id_buku' => 'required',
         ]);
         $this->Buku = Buku::all();
-        DB::beginTransaction();
         Rak::with('Buku')->updateOrCreate(['id_rak'=> $this->id_rak],
         [
             'nama_rak' => $this->nama_rak,
@@ -92,6 +94,7 @@ class RakLivewire extends Component
         $this->closeModal();
         $this->resetFields();
         DB::commit();
+        
         }
         catch (\Throwable $th){
             DB::rollback();
@@ -103,8 +106,8 @@ class RakLivewire extends Component
 
     public function edit($id_rak)
     {
-        try{
         DB::beginTransaction();
+        try{
         $this->Buku = Buku::all();   
         $rak = Rak::with('Buku')->find($id_rak);
 
@@ -141,8 +144,8 @@ class RakLivewire extends Component
 
     public function delete($id_rak)
     {
-        try{
         DB::beginTransaction();
+        try{
         $Buku = Buku::all();   
         $rak = Rak::with('Buku')->find($id_rak);
         $rak->delete();

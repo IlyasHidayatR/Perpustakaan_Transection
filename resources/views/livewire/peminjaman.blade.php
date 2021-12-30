@@ -20,9 +20,6 @@
             </button><button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
             <a href="{{ route('rak') }}" :active="request()->routeIs('rak')">Rak</a>
             </button>
-            <button class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none">
-            <a href="{{ route('anime') }}" :active="request()->routeIs('anime')">Anime</a>
-            </button>
         </nav>
     </div>
     <hr>

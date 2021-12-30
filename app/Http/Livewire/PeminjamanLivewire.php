@@ -81,6 +81,7 @@ class PeminjamanLivewire extends Component
 
     public function store()
     {
+        DB::beginTransaction();
         try{
         $this->validate([
             'tanggal_kembali' => 'required',
@@ -92,8 +93,6 @@ class PeminjamanLivewire extends Component
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all();
         $this->Peminjaman = Peminjaman::all(); 
-        //DB::beginTransaction();
-        
         Peminjaman::with('Buku', 'Petugas', 'Anggota')->updateOrCreate(['id_peminjaman'=> $this->id_peminjaman],
         [
             'tanggal_kembali' => $this->tanggal_kembali,
@@ -103,7 +102,7 @@ class PeminjamanLivewire extends Component
             
         ]);
 
-        session()->flash('message', $this->id_peminjaman ? $this->tanggal_pinjam . ' Diperbaharui':$this->tanggal_pinjam . ' Ditambahkan');
+        session()->flash('message', $this->id_peminjaman ? $this->id_peminjaman . ' Diperbaharui':$this->id_peminjaman . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
         DB::commit();
@@ -118,8 +117,8 @@ class PeminjamanLivewire extends Component
 
     public function edit($id_peminjaman)
     {
-        try{
         DB::beginTransaction();
+        try{
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all();   
@@ -165,8 +164,8 @@ class PeminjamanLivewire extends Component
 
     public function delete($id_peminjaman)
     {
-        try{
         DB::beginTransaction();
+        try{
         $Buku = Buku::all();
         $Petugas = Petugas::all();
         $Anggota = Anggota::all();   

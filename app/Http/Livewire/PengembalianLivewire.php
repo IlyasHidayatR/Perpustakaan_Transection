@@ -54,20 +54,12 @@ class PengembalianLivewire extends Component
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all();
         $this->peminjaman = Peminjaman::all();
-        $this->pengembalian = Pengembalian::all();
 
         $this->denda = '';
         $this->id_buku = '';
         $this->id_anggota = '';
         $this->id_petugas = '';
 
-        //$this->id_peminjaman = Peminjaman::get('id_peminjaman');
-        //$this->id_pengembalian1 = Pengembalian::get('id_pengembalian');
-        //$this->id_anggota1 = 
-
-
-
-        //if ()
     }
 
     public function openModal()
@@ -92,6 +84,7 @@ class PengembalianLivewire extends Component
 
     public function store()
     {
+        DB::beginTransaction();
         try{
         $this->validate([
             'denda' => 'required|numeric',
@@ -101,29 +94,29 @@ class PengembalianLivewire extends Component
         ]);
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
-        $this->peminjaman = Peminjaman::all();
-        DB::beginTransaction(); 
+        $this->Anggota = Anggota::all();
+        $peminjaman = Peminjaman::get();
         Pengembalian::updateOrCreate(['id_pengembalian'=> $this->id_pengembalian],
         [
             'denda' => $this->denda,
             'id_buku' => $this->id_buku,
             'id_anggota' => $this->id_anggota,
-            'id_petugas' => $this->id_petugas,
-            
+            'id_petugas' => $this->id_petugas
         ]);
+        
 
         $pengembalian = Pengembalian::get();
         foreach($pengembalian as $key => $value){
-            Transaksi::create(
+            Transaksi::updateOrCreate(
             [
                'id_pengembalian' =>  $value->id_pengembalian,
                'id_anggota' => $value->id_anggota,
                'id_buku' => $value->id_buku,
-               'denda'=> $value->denda,
+               'denda'=> $value->denda
             ]);
         }
 
-        session()->flash('message', $this->id_pengembalian ? $this->tanggal_pengembalian . ' Diperbaharui':$this->tanggal_pengembalian . ' Ditambahkan');
+        session()->flash('message', $this->id_pengembalian ? $this->id_pengembalian . ' Diperbaharui':$this->id_pengembalian . ' Ditambahkan');
         $this->closeModal();
         $this->resetFields();
         DB::commit();
@@ -138,8 +131,8 @@ class PengembalianLivewire extends Component
 
     public function edit($id_pengembalian)
     {
-        try{
         DB::beginTransaction();
+        try{
         $this->Buku = Buku::all();
         $this->Petugas = Petugas::all();
         $this->Anggota = Anggota::all(); 
@@ -185,8 +178,8 @@ class PengembalianLivewire extends Component
 
     public function delete($id_pengembalian)
     {
-        try{
         DB::beginTransaction();
+        try{
         $Buku = Buku::all();
         $Petugas = Petugas::all();
         $Anggota = Anggota::all();   
