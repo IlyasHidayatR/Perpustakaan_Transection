@@ -6,6 +6,7 @@ use App\Models\Peminjaman;
 use App\Models\Anggota;
 use App\Models\Petugas;
 use App\Models\Buku;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,7 +48,7 @@ class PeminjamanController extends Controller
     {
         //
         $validasi=$request->validate([
-            'tanggal_kembali' => 'required',
+            'tanggal_kembali' => Carbon::now()->addDays(7),
             'id_buku' => 'required',
             'id_anggota' => 'required',
             'id_petugas' => 'required'

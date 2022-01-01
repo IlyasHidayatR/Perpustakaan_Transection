@@ -11,18 +11,13 @@
                 @csrf
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="">
-                    <!-- <div class="mb-4">
-                            <label for="id_peminjaman" class="block text-gray-700 text-sm font-bold mb-2">ID Peminjaman:</label>
-                            <select id="id_peminjaman" name="id_peminjaman" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                                <option disable value>Pilih Peminjaman</option>
-                                @foreach($peminjaman as $bk)
-                                    <option value="{{$bk->id_peminjaman}}">{{$bk->id_peminjaman}}</option>
-                                @endforeach
-                            </select>
-                            @error('id_peminjaman')
+                    <div class="mb-4">
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Keterangan:</label>
+                            <textarea type="text" wire:model="message" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" name="message" required></textarea>
+                            @error('message')
                             <span class="text-red-500">{{$message}}</span>
                             @enderror
-                        </div> -->
+                        </div>
                         <div class="mb-4">
                             <label for="denda" class="block text-gray-700 text-sm font-bold mb-2">Jumlah Denda:</label>
                             <input type="number" wire:model="denda" class="shadow appearance-none border rounded w-full py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="denda" name="denda" required>

@@ -21,7 +21,7 @@ class PengembalianLivewire extends Component
     protected $pengembalian1;
     public $pengembalian, $Anggota, $Petugas, $Buku, $id_pengembalian, $tanggal_pengembalian, $denda, $id_buku, $id_anggota, $id_petugas, $request;
     public $transaksi, $id_transaksi, $id_peminjaman, $denda1, $id_buku1, $id_pengembalian1, $id_anggota1, $peminjaman;
-    public $isModal, $isModal1, $key, $value;
+    public $isModal, $isModal1, $key, $value, $message;
 
     protected $UpdatesQueryString = ['request'];
 
@@ -55,6 +55,7 @@ class PengembalianLivewire extends Component
         $this->Anggota = Anggota::all();
         $this->peminjaman = Peminjaman::all();
 
+        $this->message = '';
         $this->denda = '';
         $this->id_buku = '';
         $this->id_anggota = '';
@@ -87,6 +88,7 @@ class PengembalianLivewire extends Component
         DB::beginTransaction();
         try{
         $this->validate([
+            'message' => 'required',
             'denda' => 'required|numeric',
             'id_buku' => 'required',
             'id_anggota' => 'required',
@@ -104,7 +106,11 @@ class PengembalianLivewire extends Component
             'id_petugas' => $this->id_petugas
         ]);
         
-
+        //Pengisian keterangan pengembalian dengan microservice (Belum Berhasil dengan Kemauan)
+        \Http::post("http://localhost:3030/comment/create")->json([
+            'message' => $this->message
+        ]);
+        
         $pengembalian = Pengembalian::get();
         foreach($pengembalian as $key => $value){
             Transaksi::updateOrCreate(
